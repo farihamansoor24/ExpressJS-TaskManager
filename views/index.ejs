@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager - Warm Aesthetic</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#F7F4EE] min-h-screen font-sans text-[#2C2524]">
+
+    <div class="max-w-2xl mx-auto py-16 px-4">
+        <!-- Header -->
+        <div class="mb-10 text-center">
+            <span class="text-xs uppercase tracking-widest text-[#A36356] font-semibold bg-[#EFECE6] px-3.5 py-1.5 rounded-full border border-[#E2DDD5]">Daily Organizer</span>
+            <h1 class="text-4xl font-extrabold text-[#2C2524] tracking-tight mt-3">Task Manager</h1>
+            <p class="text-[#7A6E6B] mt-1 text-sm">Manage your daily tasks with style</p>
+        </div>
+
+        <!-- Add / Edit Form Card -->
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-[#E6E0D8] mb-8">
+            <% if(editTask) { %>
+            <!-- Edit Task Form -->
+                <form action="/edit-task/<%= editTask.id %>" method="POST" class="flex flex-col sm:flex-row gap-3">
+                    <input 
+                        type="text" 
+                        name="task" 
+                        value="<%= editTask.name %>" 
+                        required 
+                        class="flex-1 px-4 py-2.5 bg-[#F9F7F5] border border-[#E2DDD5] rounded-xl text-[#2C2524] placeholder-[#A89F9B] focus:outline-none focus:ring-2 focus:ring-[#A36356] focus:border-transparent transition"
+                    >
+                    <button 
+                        type="submit" 
+                        class="bg-[#A36356] hover:bg-[#8F5347] text-white font-medium px-6 py-2.5 rounded-xl transition duration-200 shadow-sm"
+                    >
+                        Update Task
+                    </button>
+                    <a 
+                        href="/" 
+                        class="bg-[#EFECE6] hover:bg-[#E5E1D8] text-[#594E4A] font-medium px-4 py-2.5 rounded-xl text-center transition"
+                    >
+                        Cancel
+                    </a>
+                </form>
+            <% } else { %>
+                <!-- Add Task Form -->
+                <form action="/add-task" method="POST" class="flex flex-col sm:flex-row gap-3">
+                    <input 
+                        type="text" 
+                        name="task" 
+                        placeholder="Enter new task..." 
+                        required 
+                        class="flex-1 px-4 py-2.5 bg-[#F9F7F5] border border-[#E2DDD5] rounded-xl text-[#2C2524] placeholder-[#A89F9B] focus:outline-none focus:ring-2 focus:ring-[#A36356] focus:border-transparent transition"
+                    >
+                    <button 
+                        type="submit" 
+                        class="bg-[#A36356] hover:bg-[#8F5347] text-white font-medium px-6 py-2.5 rounded-xl transition duration-200 shadow-sm"
+                    >
+                        Add Task
+                    </button>
+                </form>
+            <% } %>
+        </div>
+
+        <!-- Task List -->
+        <div class="bg-white rounded-2xl shadow-sm border border-[#E6E0D8] overflow-hidden">
+            <div class="p-4 border-b border-[#EFECE6] bg-[#FBF9F7] flex justify-between items-center">
+                <h2 class="font-semibold text-[#594E4A] text-sm tracking-wider uppercase">Your Tasks</h2>
+                <span class="text-xs bg-[#EFECE6] text-[#7A6E6B] px-2.5 py-1 rounded-full font-medium"><%= tasks.length %> Total</span>
+            </div>
+
+            <% if (tasks.length === 0) { %>
+                <div class="p-10 text-center text-[#A89F9B]">
+                    No task found! Add a new task above.
+                </div>
+            <% } else { %>
+                <ul class="divide-y divide-[#F2EFE9]">
+                    <% tasks.forEach(task => { %>
+                        <li class="p-4 flex items-center justify-between hover:bg-[#FAF8F5] transition">
+                            <span class="text-[#2C2524] font-medium"><%= task.name %></span>
+                            
+                            <div class="flex items-center gap-2">
+                                <!-- Edit Button -->
+                                <a 
+                                    href="/edit/<%= task.id %>" 
+                                    class="text-xs bg-[#F4EFEB] text-[#A36356] hover:bg-[#EBE5DE] font-medium px-3 py-1.5 rounded-lg border border-[#E2DDD5] transition"
+                                >
+                                    Edit
+                                </a>
+
+                                <!-- Delete Form -->
+                                <form action="/delete-task/<%= task.id %>" method="POST" class="inline">
+                                    <button 
+                                        type="submit" 
+                                        class="text-xs bg-[#FAF1F0] text-[#B85C53] hover:bg-[#F2E3E1] font-medium px-3 py-1.5 rounded-lg border border-[#EED7D5] transition"
+                                    >
+                                        Delete
+                                    </button>
+                                </form>
+                            </div>
+                        </li>
+                    <% }) %>
+                </ul>
+            <% } %>
+        </div>
+    </div>
+
+</body>
+</html>
