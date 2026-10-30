@@ -6,7 +6,7 @@ const path = require('path');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));  // For read data of  submit data
 app.set('view engine','ejs');
-
+app.set('views', path.join(__dirname, 'views'));
 
 // -------Home Page Shows Tasks ----------
 let tasks = [{id:1,name:'Task1'},{id:2,name:'Task2'}];
